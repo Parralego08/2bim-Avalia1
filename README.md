@@ -22,6 +22,6 @@ Framework preset: `None`. Build command: vazio. Build output directory: `public`
 
 ## Identificação (preencha após o fork)
 
-Nome: 
-RA: 
-URL: https://
+Nome: Rafael Parralego de Aguiar
+RA: 2026108126
+URL: https://2bim-avalia1-8yr.pages.dev
