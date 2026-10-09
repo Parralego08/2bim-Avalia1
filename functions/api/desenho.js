@@ -3,12 +3,12 @@ import { gerarDesenho, numeroValido } from "../../lib/desenho.js";
 export async function onRequest(context) {
   const { request, env } = context;
 
-  // 1. Validar Método (Contrato 405)
+  // 1. Ordem 1: Método (Contrato 405)
   if (request.method !== "POST") {
     return new Response("Método não permitido.", { status: 405 });
   }
 
-  // 2. Validar Corpo (Contrato 400)
+  // 2. Ordem 2: Corpo (Contrato 400)
   let body;
   try {
     body = await request.json();
@@ -18,19 +18,19 @@ export async function onRequest(context) {
 
   const numero = body.numero;
   if (numero === undefined || !numeroValido(numero)) {
-    return new Response("Número ausente, não inteiro ou fora do intervalo.", { status: 400 });
+    return new Response("Número ausente, não inteiro ou fora do intervalo de 1 a 100.", { status: 400 });
   }
 
-  // 3. Validar Token (Contrato 401)
+  // 3. Ordem 3: Token (Contrato 401)
   const authHeader = request.headers.get("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return new Response("Token ausente ou mal formatado.", { status: 401 });
+    return new Response("Token ausente ou formato inválido.", { status: 401 });
   }
   
   const token = authHeader.split(" ")[1];
   
-  const urlGoogle = `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`;
-  const respostaGoogle = await fetch(urlGoogle);
+  const googleUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`;
+  const respostaGoogle = await fetch(googleUrl);
 
   if (!respostaGoogle.ok) {
     return new Response("Token inválido ou expirado.", { status: 401 });
@@ -38,16 +38,15 @@ export async function onRequest(context) {
 
   const dadosToken = await respostaGoogle.json();
 
-  // Validar se o token foi gerado para a SUA aplicação
   if (dadosToken.aud !== env.GOOGLE_CLIENT_ID) {
-    return new Response("O Client ID não corresponde.", { status: 401 });
+    return new Response("Client ID inválido (aud incorreto).", { status: 401 });
   }
 
   if (dadosToken.email_verified !== "true") {
     return new Response("O e-mail não está verificado.", { status: 401 });
   }
 
-  // 4. Sucesso: Gera o SVG usando o e-mail validado nativamente
+  // 4. Sucesso (Contrato 200)
   const svgTexto = gerarDesenho(numero, dadosToken.email);
 
   return new Response(svgTexto, {
