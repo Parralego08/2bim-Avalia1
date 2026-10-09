@@ -1,129 +1,136 @@
+/* Variáveis de cores (Obrigatórias para o script.js funcionar) */
 :root {
-  --fundo: #0d1117;
-  --superficie: #161b22;
-  --borda: #30363d;
-  --texto: #e6edf3;
-  --texto-suave: #8b949e;
-  --destaque: #58a6ff;
-  --erro: #ff7b72;
+  --fundo: #f0f2f5;
+  --texto: #333333;
+  --primaria: #0056b3;
+  --primaria-hover: #004494;
+  --erro: #dc3545;       /* Vermelho para mensagens de erro */
+  --destaque: #28a745;   /* Verde para mensagens de sucesso */
+  --borda: #cccccc;
+  --branco: #ffffff;
 }
 
-* {
-  box-sizing: border-box;
-}
-
+/* Estrutura da Página */
 body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--fundo);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--fundo);
   color: var(--texto);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.5;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
+/* O "Cartão" principal onde tudo acontece */
 main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 48px 16px;
+  background-color: var(--branco);
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
 }
 
-h1 {
-  margin: 0 0 8px;
-  font-family: Georgia, serif;
-  font-weight: normal;
-  font-size: 2.4rem;
+header h1 {
+  margin-top: 0;
+  color: var(--primaria);
+  font-size: 1.8rem;
 }
 
 header p {
-  margin: 0 0 32px;
-  color: var(--texto-suave);
+  color: #666666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
 }
 
+/* Centralizando o botão do Google */
+#g_id_onload, .g_id_signin {
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilos do Formulário */
 form {
-  display: grid;
-  grid-template-columns: 1fr 2fr auto;
-  grid-template-rows: auto auto;
-  grid-auto-flow: column;
-  gap: 6px 12px;
-  align-items: end;
-  padding: 20px;
-  background: var(--superficie);
-  border: 1px solid var(--borda);
-  border-radius: 10px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 label {
-  font-size: 0.85rem;
-  color: var(--texto-suave);
+  font-weight: bold;
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--texto);
 }
 
-input {
-  width: 100%;
-  padding: 10px 12px;
-  font: inherit;
-  color: var(--texto);
-  background: var(--fundo);
+input[type="number"] {
+  padding: 12px;
   border: 1px solid var(--borda);
   border-radius: 6px;
+  font-size: 16px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
-input:focus {
-  outline: 2px solid var(--destaque);
-  outline-offset: 1px;
+input[type="number"]:focus {
+  border-color: var(--primaria);
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
 }
 
+/* Estilos dos Botões */
 button {
-  padding: 10px 20px;
-  font: inherit;
-  font-weight: 600;
-  color: var(--fundo);
-  background: var(--destaque);
+  background-color: var(--primaria);
+  color: var(--branco);
   border: none;
+  padding: 14px;
   border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-}
-
-form button {
-  grid-row: 2;
+  transition: background-color 0.3s, transform 0.1s;
 }
 
 button:hover {
-  filter: brightness(1.1);
+  background-color: var(--primaria-hover);
 }
 
-#mensagem {
-  min-height: 1.5em;
-  margin: 12px 0;
-  color: var(--erro);
-}
-
-figure {
-  margin: 0;
-}
-
-figure svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--borda);
-  border-radius: 10px;
+button:active {
+  transform: scale(0.98);
 }
 
 #baixar {
-  margin-top: 16px;
-  color: var(--texto);
-  background: transparent;
-  border: 1px solid var(--borda);
+  margin-top: 20px;
+  background-color: var(--destaque);
+  width: 100%;
 }
 
-@media (max-width: 560px) {
-  form {
-    grid-template-columns: 1fr;
-    grid-template-rows: none;
-    grid-auto-flow: row;
-  }
+#baixar:hover {
+  background-color: #218838;
+}
 
-  form button {
-    grid-row: auto;
-  }
+/* Área de Mensagens e Desenho */
+#mensagem {
+  font-weight: bold;
+  margin-top: 20px;
+  min-height: 20px; /* Evita que a página pule quando o texto aparece */
+}
+
+#desenho {
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+
+/* Faz o SVG gerado se adaptar bem ao espaço */
+#desenho svg {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
