@@ -10,7 +10,7 @@ let tokenAtual = null;
 window.tratarLoginGoogle = (resposta) => {
     tokenAtual = resposta.credential;
     mensagem.style.color = "var(--destaque)";
-    mensagem.textContent = "Login efetuado! Pode gerar o desenho.";
+    mensagem.textContent = "Autenticado com sucesso. Pode gerar o desenho.";
 };
 
 formulario.addEventListener("submit", async (evento) => {
@@ -28,7 +28,7 @@ formulario.addEventListener("submit", async (evento) => {
   }
 
   if (!tokenAtual) {
-    mensagem.textContent = "Faça login com o Google para assinar.";
+    mensagem.textContent = "Faça login com o Google para assinar o desenho.";
     return;
   }
 
@@ -52,7 +52,7 @@ formulario.addEventListener("submit", async (evento) => {
     area.innerHTML = svgAtual;
     botaoBaixar.hidden = false;
   } catch (erro) {
-    mensagem.textContent = "Erro de rede ao contactar o servidor.";
+    mensagem.textContent = "Erro de rede ao comunicar com o servidor.";
   }
 });
 
